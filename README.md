@@ -122,7 +122,7 @@ ORDER BY Name ASC;
 -- HAVING COUNT(Name) > 3 (Uncomment to filter)
 ```
 
-### 🌎 Most Populous Country
+### 🌎 Most Popular Country
 ```sql
 SELECT Name AS CountryName, Population 
 FROM world.country 
