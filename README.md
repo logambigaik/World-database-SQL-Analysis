@@ -37,7 +37,7 @@ JOIN country ON city.CountryCode = country.Code
 WHERE country.Name = 'United States';
 ```
 
-### Alternate Method
+### Get the count of cities in the USA without using JOIN
 ```sql
 SELECT COUNT(DISTINCT Name) AS CitiesInUSA 
 FROM city 
@@ -55,12 +55,10 @@ WHERE LifeExpectancy = (SELECT MAX(LifeExpectancy) FROM country);
 ```
 
 ### 🏙️ City Name Filters and Patterns
-- Cities starting with 'New':
 ```sql
 SELECT Name FROM world.city WHERE Name LIKE 'New%';
 ```
 
-- Cities starting with 'Be', sorted by population:
 ```sql
 SELECT * FROM world.city 
 WHERE Name LIKE 'Be%' 
@@ -112,7 +110,7 @@ ORDER BY Population ASC
 LIMIT 10;
 ```
 
-### 🔁 Repeated City Names
+### 🔁 Group by with HAVING clause
 - Cities grouped by name with their occurrence count:
 ```sql
 SELECT Name AS CityName, COUNT(Name) AS OccurrenceCount 
