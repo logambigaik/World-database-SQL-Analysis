@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>World Database SQL Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    details {
+      background: #fff;
+      margin: 12px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+      padding: 12px;
+    }
+    summary {
+      font-weight: bold;
+      font-size: 1.1em;
+      cursor: pointer;
+      outline: none;
+    }
+    details:hover {
+      transform: scale(1.01);
+    }
+    pre {
+      background: #eaf0f6;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌍 World Database SQL Analysis</h1>
+
+  <details>
+    <summary>🔍 Exploring the Database</summary>
+    <pre><code>USE world;
+DESC country;</code></pre>
+  </details>
+
+  <details>
+    <summary>🗺️ List of Cities</summary>
+    <pre><code>SELECT DISTINCT CountryCode, Name, District FROM city;</code></pre>
+  </details>
+
+  <details>
+    <summary>🇺🇸 Count of Cities in the USA</summary>
+    <pre><code>-- Using JOIN
+SELECT COUNT(DISTINCT city.Name) AS CitiesInUSA, country.Name 
+FROM city 
+JOIN country ON city.CountryCode = country.Code 
+WHERE country.Name = 'United States';
+
+-- Without JOIN
+SELECT COUNT(DISTINCT Name) AS CitiesInUSA 
+FROM city 
+WHERE CountryCode IN (
+    SELECT Code FROM country WHERE Name = 'United States'
+);</code></pre>
+  </details>
+
+  <details>
+    <summary>🧬 Country with the Highest Life Expectancy</summary>
+    <pre><code>SELECT Name AS CountryName, LifeExpectancy 
+FROM country 
+WHERE LifeExpectancy = (SELECT MAX(LifeExpectancy) FROM country);</code></pre>
+  </details>
+
+  <details>
+    <summary>🏙️ City Name Filters and Patterns</summary>
+    <pre><code>-- Cities starting with 'New'
+SELECT Name FROM world.city WHERE Name LIKE 'New%';
+
+-- Cities starting with 'Be' (sorted by population)
+SELECT * FROM world.city 
+WHERE Name LIKE 'Be%' 
+ORDER BY Population DESC;</code></pre>
+  </details>
+
+  <details>
+    <summary>🌆 City Population Queries</summary>
+    <pre><code>-- Top 10 populous cities
+SELECT * FROM world.city 
+ORDER BY Population DESC 
+LIMIT 10;
+
+-- Cities with population > 2M
+SELECT * FROM world.city 
+WHERE Population > 2000000 
+ORDER BY Population DESC;
+
+-- Cities with population between 500K and 1M
+SELECT Name, CountryCode, Population 
+FROM world.city 
+WHERE Population BETWEEN 500000 AND 1000000 
+ORDER BY Population DESC;</code></pre>
+  </details>
+
+  <details>
+    <summary>🔠 Alphabetical City Listings</summary>
+    <pre><code>SELECT Name FROM world.city ORDER BY Name ASC;</code></pre>
+  </details>
+
+  <details>
+    <summary>🏙️ Largest and Smallest Cities by Population</summary>
+    <pre><code>-- Most populous city
+SELECT Name AS CityName, CountryCode, Population 
+FROM world.city 
+ORDER BY Population DESC 
+LIMIT 1;
+
+-- 10 least populous cities
+SELECT Name AS CityName, CountryCode, Population 
+FROM world.city 
+ORDER BY Population ASC 
+LIMIT 10;</code></pre>
+  </details>
+
+  <details>
+    <summary>🔁 Group By with HAVING Clause</summary>
+    <pre><code>-- Group cities by name and count
+SELECT Name AS CityName, COUNT(Name) AS OccurrenceCount 
+FROM world.city 
+GROUP BY Name 
+ORDER BY Name ASC;
+
+-- Optional: Uncomment to filter repeated names
+-- HAVING COUNT(Name) > 3</code></pre>
+  </details>
+
+  <details>
+    <summary>🌎 Most Populated Country</summary>
+    <pre><code>SELECT Name AS CountryName, Population 
+FROM world.country 
+ORDER BY Population DESC 
+LIMIT 1;</code></pre>
+  </details>
+
+</body>
+</html>
